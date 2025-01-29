@@ -111,12 +111,20 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+		tasks.withType(JavaCompile) {
+        dependsOn(':app:copyReactNativeVectorIconFonts')
+    }
+    tasks.whenTaskAdded { task ->
+        if (task.name.contains('generateDebugLintReportModel')) {
+            task.dependsOn(':app:copyReactNativeVectorIconFonts')
+        }
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-	implementation("androidx.core:core:1.13.1")
+		implementation("androidx.core:core:1.13.1")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -124,5 +132,5 @@ dependencies {
         implementation jscFlavor
     }
 
-	implementation project(':react-native-vector-icons')
+		implementation project(':react-native-vector-icons')
 }
